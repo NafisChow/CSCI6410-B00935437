@@ -1,4 +1,9 @@
-
+---
+title: "Practical 3"
+author: "Nafis Ibtida Chowdhury B00935437"
+date: "2024-06-16"
+output: html_document
+---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -108,6 +113,8 @@ In the output above, you can see the filenames for all the chest X-rays. Look ca
 
 **1_** Do these filenames tell you anything about pneumonia? Why might this make predicting pneumonia more challenging?
 
+The variability and ambiguity inherent in filenames pose significant challenges for predicting pneumonia. Filenames may lack standardization and explicit indicators, leading to difficulties in identifying relevant data. The diverse naming conventions across different healthcare institutions further complicate this task, as do potential inconsistencies and errors introduced by human operators. Additionally, filenames often require contextual information for accurate interpretation, which may not always be available. Consequently, developing a reliable prediction model necessitates robust data processing pipelines capable of managing these complexities, leveraging additional contextual information and advanced data processing techniques to extract meaningful features for accurate pneumonia prediction.
+
 
 The dataset folder is assumed to contain three subfolders: train, test, and validate. Each of these subfolders further contains two folders representing the two classes or labels in our classification task: "normal" and "pneumonia".
 The code provides a way to explore the dataset directory structure and obtain information about the number of images and their distribution across different classes. This information can be helpful in understanding the dataset and planning the subsequent steps of the image classification task.
@@ -216,6 +223,9 @@ grid.arrange(grobs = plots, nrow = 2, ncol = 2)
 ```
 
 **2_** From looking at only 3 images do you see any attribute of the images that we may have to normalise before training a model?
+
+
+Before training a model for pneumonia detection using chest X-ray images, it is crucial to normalize certain attributes to ensure consistency and improve model performance. Key attributes requiring normalization include image intensity and pixel values, which should be scaled to a uniform range to address differences in brightness and contrast. Additionally, variations in image size and resolution necessitate resizing all images to a standard dimension, such as 224x224 pixels. Standardizing color channels is also important, particularly if images vary between grayscale and RGB formats. These normalization steps ensure the model receives consistent input data, essential for effective training and accurate predictions.
 
 # Data Pre-processing
 
@@ -347,6 +357,9 @@ grid.arrange(fig, nrow = 1)
 ```
 As you can see, the provided dataset is completely balanced in all sets.
 **3_** if the dataset was not balanced, what kind of techniques could be useful?
+
+
+In the context of an imbalanced dataset for pneumonia detection, several techniques can be employed to address this issue and improve model performance. Methods such as oversampling the minority class or undersampling the majority class can be utilized to create a more balanced dataset. Advanced techniques like Synthetic Minority Over-sampling Technique (SMOTE) generate synthetic examples to bolster the minority class. Additionally, using class weights in the loss function can help the model pay more attention to the minority class during training. Ensemble methods, such as bagging and boosting, can also be effective in mitigating the impact of class imbalance. These approaches collectively enhance the model's ability to accurately detect pneumonia despite the imbalance in the dataset.
 
 # Training
 
@@ -573,9 +586,12 @@ print(acc_plot)
 
 **4_** Based on the training and test accuracy, is this model actually managing to classify X-rays into pneumonia vs normal? What do you think contributes to this? why?
 
+
 It seems that the model is not training effectively the model is struggling to learn from the data and is not generalizing well to unseen examples. It suggests that the model may be too complex or the training process needs adjustments.
 
 **5_** what is your suggestions to solve this problem? How could we improve this model?
+
+
 
 # Data Augmentation
 Data augmentation is one of the solutions to consider when facing training difficulties. Data augmentation involves applying various transformations or modifications to the existing training data, effectively expanding the dataset and introducing additional variations. This technique can help improve model performance and generalization by providing the model with more diverse examples to learn from.
@@ -652,6 +668,8 @@ batch[[1]]$size()
 
 **6_** What are the potential drawbacks or disadvantages of data augmentation?
 
+While data augmentation can enhance model performance by increasing the diversity of the training set, it has potential drawbacks. Over-augmentation may lead to unrealistic variations that do not represent real-world data, potentially confusing the model. Augmented data might introduce noise, reducing the signal-to-noise ratio and hindering the model's learning process. Additionally, data augmentation can increase the computational load and training time, as the model processes a larger, augmented dataset. There is also a risk of inadvertently reinforcing existing biases within the dataset if the augmentation techniques are not applied judiciously. Therefore, careful consideration and balanced application of augmentation techniques are crucial to avoid these pitfalls.
+
 # Mobile net
 
 Transfer learning is another technique in machine learning where knowledge gained from solving one problem is applied to a different but related problem. It involves leveraging pre-trained models that have been trained on large-scale datasets and have learned general features. By utilizing transfer learning, models can benefit from the knowledge and representations learned from these pre-trained models.
@@ -660,12 +678,20 @@ Torchvison provides versions of all the integrated architectures that have alrea
 
 **7_** What is ImageNet aka “ImageNet Large Scale Visual Recognition Challenge 2012”? How many images and classes does it involve? Why might this help us?
 
+ImageNet, specifically the "ImageNet Large Scale Visual Recognition Challenge 2012" (ILSVRC 2012), is a benchmark dataset and competition in the field of computer vision. It involves over 1.2 million labeled images spanning 1,000 different classes, covering a wide variety of objects and scenes. This extensive and diverse dataset has been instrumental in advancing the development of deep learning models. Utilizing models pre-trained on ImageNet for transfer learning can significantly benefit tasks like pneumonia detection in X-rays. The pre-trained models have already learned a vast array of features that can be fine-tuned for specific tasks, thus improving the model's performance and accelerating the training process.
+
 MobileNet is a pre-trained model that can be effectively utilized in transfer learning scenarios. Do some research about this model.
 
 **8_** Why do you think using this architecture in this practical assignment can help to improve the results? 
 Hint: See MobileNet publication
 
+Using the MobileNet architecture in this practical assignment can significantly improve results due to its efficient design, which balances high performance with low computational cost. MobileNet utilizes depthwise separable convolutions, reducing the number of parameters and computational complexity compared to traditional convolutional networks. This makes it well-suited for tasks with limited computational resources while maintaining accuracy. Additionally, MobileNet's pre-training on the extensive and diverse ImageNet dataset enables it to leverage learned features that are transferable to the pneumonia classification task. Consequently, it can achieve high accuracy and generalization with reduced training time and data requirements, enhancing overall model performance.
+
+
 **9_** How many parameters does this network have? How does this compare to better performing networks available in torch?
+
+
+The MobileNet architecture, specifically MobileNetV2, has approximately 3.4 million parameters. This is significantly fewer compared to other high-performing networks available in Torch, such as ResNet-50 with around 25.6 million parameters and VGG16 with approximately 138 million parameters. Despite its smaller size, MobileNet maintains competitive accuracy through its efficient use of depthwise separable convolutions, making it an optimal choice for applications requiring a balance between performance and computational efficiency. This reduced parameter count not only decreases the model's memory footprint and computational demands but also enables faster training and inference times, which is particularly advantageous for practical assignments with resource constraints.
 
 In the following you can see an example of how we can load pre-trained models in our codes.
 
